@@ -38,3 +38,5 @@ Route::get('/penjumlahan', function(){
 
 //menampilkan tampilan login
 Route::get('/login',[LoginController::class,'index']);
+//untuk cek login
+Route::post('/login',[LoginController::class,'cek_login']);

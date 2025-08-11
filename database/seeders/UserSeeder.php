@@ -17,8 +17,11 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        //disable foreign yang ada ditable
         Schema::disableForeignKeyConstraints();
+        //reset table user
         User::truncate();
+        //enable foreign yang ada di table
         Schema::enableForeignKeyConstraints();
 
         $data =[

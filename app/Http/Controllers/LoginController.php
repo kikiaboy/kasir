@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -12,6 +13,32 @@ class LoginController extends Controller
     public function index()
     {
         return view('login');
+    }
+
+    public function cek_login(Request $request){
+        $credentials = $request->validate([
+            'email'=>['required','email'],
+            'password'=>['required'],
+
+        ]);
+        //cek username/email atau password benar/tersedia
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            // ambil data hak_akses dari user login
+            $hak_akses = Auth::user()->hak_akses;
+            // dd($hak_akses);
+            // die;
+           if ($hak_akses =='admin') {
+            echo"Selamat datang admin";
+           }else if ($hak_akses=='kasir') {
+             echo"Selamat datang kasir";
+           }else {
+            echo"Hak akses tidak terdaftar";
+           }
+        }else {
+             echo"<h1>Gagal Login</h1>";
+        }
+
     }
 
     /**

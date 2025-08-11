@@ -9,8 +9,8 @@
 </head>
 <body>
 
-
-
+ <form method="POST" action="/login">
+@csrf
 
     <div class="container">
        <section class="vh-100 gradient-custom">
@@ -25,15 +25,16 @@
               <h2 class="fw-bold mb-2 text-uppercase"><b>Login</b></h2>
               <p class="text-dark-50 mb-5">Please enter your login and password!</p>
 
+
               <div data-mdb-input-init class="form-outline form-dark mb-4">
-                <label class="form-label" for="typeEmailX"><b>Email</b></label>
-                <input type="email" id="typeEmailX" class="form-control form-control-lg" />
+                <label class="form-label" for="email"><b>Email</b></label>
+                <input type="email" id="email" class="form-control form-control-lg" name="email" />
 
               </div>
 
               <div data-mdb-input-init class="form-outline form-dark mb-4">
-                <label class="text-left"  for="typePasswordX"><b>Password</b></label>
-                <input type="password" id="typePasswordX" class="form-control form-control-lg" />
+                <label class="text-left"  for="password"><b>Password</b></label>
+                <input type="password" id="password" class="form-control form-control-lg" name="password" />
 
               </div>
 
@@ -69,7 +70,7 @@
 
 
 
-
+ </form>
 </body>
 
 </html>
