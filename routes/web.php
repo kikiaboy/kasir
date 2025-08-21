@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
 
 /*
@@ -40,3 +41,14 @@ Route::get('/penjumlahan', function(){
 Route::get('/login',[LoginController::class,'index']);
 //untuk cek login
 Route::post('/login',[LoginController::class,'cek_login']);
+Route::get('/admin/home',[AdminController::class,'index']);
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('main');
+    })->name('main');
+});
+
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/login');
+})->name('logout');

@@ -14,6 +14,10 @@ class LoginController extends Controller
     {
         return view('login');
     }
+    public function dashboard()
+    {
+        return view('main');
+    }
 
     public function cek_login(Request $request){
         $credentials = $request->validate([
@@ -28,17 +32,22 @@ class LoginController extends Controller
             $hak_akses = Auth::user()->hak_akses;
             // dd($hak_akses);
             // die;
-           if ($hak_akses =='admin') {
-            echo"Selamat datang admin";
-           }else if ($hak_akses=='kasir') {
-             echo"Selamat datang kasir";
-           }else {
-            echo"Hak akses tidak terdaftar";
-           }
-        }else {
-             echo"<h1>Gagal Login</h1>";
-        }
+            if ($hak_akses == 'admin') { 
+                // Menampilkan tampilan admin/home
+        return redirect()->intended('/admin/home'); // ini ganti
+    } else if ($hak_akses == 'kasir') {
+        return redirect()->route('main');
+    } else {
+        return redirect()->route('login')->withErrors([
+            'akses' => 'Hak akses tidak terdaftar'
+        ]);
+    }
 
+} else {
+    return redirect()->route('login')->withErrors([
+        'login' => 'Email atau password salah'
+    ]);
+}
     }
 
     /**
