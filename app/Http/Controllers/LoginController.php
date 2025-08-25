@@ -32,7 +32,7 @@ class LoginController extends Controller
             $hak_akses = Auth::user()->hak_akses;
             // dd($hak_akses);
             // die;
-            if ($hak_akses == 'admin') { 
+            if ($hak_akses == 'admin') {
                 // Menampilkan tampilan admin/home
         return redirect()->intended('/admin/home'); // ini ganti
     } else if ($hak_akses == 'kasir') {
@@ -48,6 +48,14 @@ class LoginController extends Controller
         'login' => 'Email atau password salah'
     ]);
 }
+    }
+
+    public function logout(Request $request){
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/login');
+
     }
 
     /**

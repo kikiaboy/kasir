@@ -47,8 +47,10 @@ Route::middleware(['auth'])->group(function () {
         return view('main');
     })->name('main');
 });
+//logout
+Route::get('/logout', [LoginController::class,'logout'])->name ('logout');
 
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect('/login');
-})->name('logout');
+// Route::post('/logout', function () {
+//     Auth::logout();
+//     return redirect('/login');
+// })->name('logout');
