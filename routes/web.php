@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\KategoriController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,8 @@ Route::middleware(['auth'])->group(function () {
 //logout
 Route::get('/logout', [LoginController::class,'logout'])->name ('logout');
 
+//Memanggil halaman admin - kategori
+Route::get('/admin/kategori',[KategoriController::class,'index']);
 // Route::post('/logout', function () {
 //     Auth::logout();
 //     return redirect('/login');
