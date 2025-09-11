@@ -57,3 +57,5 @@ Route::get('/admin/kategori',[KategoriController::class,'index']);
 //     Auth::logout();
 //     return redirect('/login');
 // })->name('logout');
+//menyimpan data kategori
+Route::post('/tambah_kategori',[KategoriController::class,'store']);
