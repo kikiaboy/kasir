@@ -59,3 +59,6 @@ Route::get('/admin/kategori',[KategoriController::class,'index']);
 // })->name('logout');
 //menyimpan data kategori
 Route::post('/tambah_kategori',[KategoriController::class,'store']);
+
+//update data kategori
+Route::put('/ubah_kategori/{id}',[KategoriController::class,'update'])->name('ubah_kategori');
