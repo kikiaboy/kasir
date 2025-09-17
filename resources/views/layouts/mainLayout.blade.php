@@ -37,7 +37,7 @@
           </ul>
         </li> --}}
         <li class="nav-item">
-          <a class="nav-link "  href="#">Barang</a>
+          <a class="nav-link {{Request::is('admin/produk') ? 'active':''}}  "  href="/admin/produk">Barang</a>
         </li>
          <li class="nav-item">
           <a class="nav-link"  href="#" >Transaksi</a>

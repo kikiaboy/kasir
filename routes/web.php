@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\KategoriController;
 
 /*
@@ -62,3 +63,14 @@ Route::post('/tambah_kategori',[KategoriController::class,'store']);
 
 //update data kategori
 Route::put('/ubah_kategori/{id}',[KategoriController::class,'update'])->name('ubah_kategori');
+
+Route::get('/admin/produk',[ProdukController::class,'index']);
+// Route::post('/logout', function () {
+//     Auth::logout();
+//     return redirect('/login');
+// })->name('logout');
+//menyimpan data kategori
+Route::post('/tambah_produk',[ProdukController::class,'store']);
+
+//update data kategori
+Route::put('/ubah_produk/{id}',[ProdukController::class,'update'])->name('ubah_produk');
