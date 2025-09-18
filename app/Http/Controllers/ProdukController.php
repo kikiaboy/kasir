@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produk;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 
 class ProdukController extends Controller
@@ -12,9 +13,11 @@ class ProdukController extends Controller
      */
     public function index()
     {
-         //menampilkan halaman kategori
+         //menampilkan kategori
         // query untuk memanggil data dari table kategori
         $data['produk']=Produk::all();
+        $data['kategori']=Kategori::all();
+
         // mengirim data ke tampilan
         return view('admin.produk',$data);
     }

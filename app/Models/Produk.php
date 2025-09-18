@@ -19,4 +19,19 @@ class Produk extends Model
         'kategori_id',
 
     ];
+
+    /**
+     * Get the user that owns the Produk
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    
+public function showkategori()
+        {
+            // Kategori adalah nama model
+            //kategori_id adalah nama foreignkey
+            //id adalah primary key dari table kategori
+            return $this->belongsTo(Kategori::class, 'kategori_id','id');
+        }
+
 }

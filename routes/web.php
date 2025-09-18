@@ -64,6 +64,10 @@ Route::post('/tambah_kategori',[KategoriController::class,'store']);
 //update data kategori
 Route::put('/ubah_kategori/{id}',[KategoriController::class,'update'])->name('ubah_kategori');
 
+// hapus data kategori
+Route::delete('/hapus_kategori/{id}',[KategoriController::class,'destroy'])->name('hapus_kategori');
+
+
 Route::get('/admin/produk',[ProdukController::class,'index']);
 // Route::post('/logout', function () {
 //     Auth::logout();
@@ -74,3 +78,4 @@ Route::post('/tambah_produk',[ProdukController::class,'store']);
 
 //update data kategori
 Route::put('/ubah_produk/{id}',[ProdukController::class,'update'])->name('ubah_produk');
+
