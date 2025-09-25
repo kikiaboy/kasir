@@ -40,7 +40,7 @@
           <a class="nav-link {{Request::is('admin/produk') ? 'active':''}}  "  href="/admin/produk">Barang</a>
         </li>
          <li class="nav-item">
-          <a class="nav-link"  href="#" >Transaksi</a>
+          <a class="nav-link {{Request::is('admin/transaksi') ? 'active':''}}"  href="/admin/transaksi" >Transaksi</a>
         </li>
          <li class="nav-item">
           <a class="nav-link "  href="/logout">Logout</a>

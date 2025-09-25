@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\TransaksiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,4 +79,9 @@ Route::post('/tambah_produk',[ProdukController::class,'store']);
 
 //update data kategori
 Route::put('/ubah_produk/{id}',[ProdukController::class,'update'])->name('ubah_produk');
+
+// hapus data kategori
+Route::delete('/hapus_produk/{id}',[ProdukController::class,'destroy'])->name('hapus_produk');
+//memanggil halaman admin - transaksi
+Route::get('/admin/transaksi',[TransaksiController::class,'index']);
 

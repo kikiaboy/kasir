@@ -33,10 +33,11 @@
         <td>{{$data->showkategori->nama_kategori ?? '-'}}</td>
         <td class="text-center">
             <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#ubahproduk{{$data->id}}">Ubah</button>
-             <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#hapusproduk">Hapus</button>
+             <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#hapusproduk{{$data->id}}">Hapus</button>
         </td>
     </tr>
     @include('admin.modal.produk_edit')
+    @include('admin.modal.produk_delete')
     @endforeach
 </tbody>
 </table>

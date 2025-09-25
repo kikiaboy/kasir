@@ -27,7 +27,7 @@
         <select name="kategori_id" id="kategori_id" class="form form-control ">
             <option value="" disabled>Pilih kategori.......</option>
             @foreach($kategori as $data)
-                <option value="{{ $data->id }}"  {{ $data->id == $data->kategori_id ? 'selected' :'' }}>{{ $data->nama_kategori }}</option>
+                <option value="{{ $data->id }}"  {{ $data->id == $data->kategori_id ? 'selected' :' ' }}>{{ $data->nama_kategori }}</option>
             @endforeach
         </select>
     </div>

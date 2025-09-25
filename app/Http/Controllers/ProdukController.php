@@ -87,8 +87,11 @@ class ProdukController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Produk $produk)
+    public function destroy($id)
     {
-        //
+        //menghapus data kategori berdasarkan id
+        $produk= Produk::findOrFail($id);
+        $produk->delete();
+        return redirect('/admin/kategori');
     }
 }
