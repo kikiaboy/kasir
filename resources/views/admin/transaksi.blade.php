@@ -9,6 +9,7 @@
 </style>
 
 <h3>Transaksi Penjualan</h3>
+@include('admin.modal.add_cart')
 <div class="row mb-3">
     <div class="col-md-2">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCart">
@@ -22,7 +23,7 @@
         <h4 class="mb-0">Kode Transaksi</h4>
     </div>
     <div class="col-md-10">
-        <h4 class="mb-0">INI KODE</h4>
+        <h4 class="mb-0">: {{$kodeTransaksi}}</h4>
     </div>
 </div>
 
@@ -31,7 +32,7 @@
         <h4 class="mb-0">Tanggal</h4>
     </div>
     <div class="col-md-10">
-        <h4 class="mb-0"> {{ now()->format('d-m-Y') }} </h4>
+        <h4 class="mb-0">: {{ now()->format('d-m-Y') }} </h4>
     </div>
 </div>
 
@@ -48,6 +49,23 @@
         </tr>
     </thead>
     <tbody>
+        @foreach($keranjang as $data)
+        <tr>
+            <td>{{$loop->iteration}}</td>
+            <td>{{$data->produk_id}}</td>
+            <td>{{$data->nama_produk}}</td>
+            <td>{{$data->harga}}</td>
+            <td>{{$data->qty}}</td>
+            <td>{{$data->subtotal}}</td>
+            <td>
+                <form action="{{route('keranjang.destroy',$data->id)}}" method="POST" onsubmit="return confirm('Apakah anda yakin ingin menghapus barang ini dari keranjang?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                </form>
+            </td>
+        </tr>
+        @endforeach
     </tbody>
 </table>
 

@@ -85,3 +85,8 @@ Route::delete('/hapus_produk/{id}',[ProdukController::class,'destroy'])->name('h
 //memanggil halaman admin - transaksi
 Route::get('/admin/transaksi',[TransaksiController::class,'index']);
 
+//menambahkan produk ke keranjang
+Route::post('/add_to_cart/{id}',[TransaksiController::class,'add_cart'])->name('add_cart');
+
+// hapus item keranjang
+Route::delete('/keranjang/{id}',[TransaksiController::class,'destroy'])->name('keranjang.destroy');
