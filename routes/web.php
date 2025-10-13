@@ -90,3 +90,7 @@ Route::post('/add_to_cart/{id}',[TransaksiController::class,'add_cart'])->name('
 
 // hapus item keranjang
 Route::delete('/keranjang/{id}',[TransaksiController::class,'destroy'])->name('keranjang.destroy');
+
+Route::post('/keranjang/update/{id}',[TransaksiController::class,'updateQty'])->name('keranjang.update');
+
+Route::post('/transaksi/simpan',[TransaksiController::class,'simpanTransaksi'])->name('transaksi.simpan');

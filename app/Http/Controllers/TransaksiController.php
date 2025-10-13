@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Produk;
 use App\Models\Keranjang;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
+use App\Models\TransaksiDetail;
 
 class TransaksiController extends Controller
 {
@@ -18,19 +20,87 @@ class TransaksiController extends Controller
         $data['produk']=Produk::all();
         //memanggil data keranjang
         $data['keranjang']=Keranjang::all();
+        $data['total']=$data['keranjang']->sum('subtotal');
         $data['kodeTransaksi']=$this->kodeOtomatis();
+        $data['jumlahItem']=Keranjang::count();
         return view('admin.transaksi',$data);
     }
 
-    public function kodeOtomatis(){
-        $query = Transaksi::selectraw('MAX(RIGHT(kode_transaksi,3))AS max_number');
-        $kode="001";
-        if ($query->count()> 0) {
-            $data = $query->first();
-            $number=((int)$data->max_number)+1;//5+1=6
-            $kode = sprintf("%03s",$number);//006
+    // public function kodeOtomatis(){
+    //     $query = Transaksi::selectraw('MAX(RIGHT(kode_transaksi,3))AS max_number');
+    //     $kode="001";
+    //     if ($query->count()> 0) {
+    //         $data = $query->first();
+    //         $number=((int)$data->max_number)+1;//5+1=6
+    //         $kode = sprintf("%03s",$number);//006
+    //     }
+    //     return'TRS'.$kode;
+    // }
+
+    public function kodeOtomatis()
+    {
+        $tanggal=date('Ymd');
+
+        //Ambil semua transaksi hari ini
+        $dataHariIni= Transaksi::whereDate('tanggal_transaksi',today())->get();
+        $maxNumber=0;
+
+        foreach($dataHariIni as $item){
+            //Ambil angka setelah TRS,sebelum tanda-
+            if (preg_match('/TRS(\d+)-/', $item->kode_transaksi,$matches)){
+                $angka =(int)$matches[1];
+                if($angka>$maxNumber){
+                    $maxNumber=$angka;
+                }
+            }
         }
-        return'TRS'.$kode;
+        $kode = sprintf('%03d',$maxNumber+1);
+
+        return 'TRS' . $kode .'-'.$tanggal;
+    }
+
+    public function updateQty(Request $request,$id){
+        //validasi input untuk memastikan qty adalah integer minimal 1
+        $request->validate([
+            'qty' => 'required|integer|min:1',
+        ]);
+        //Cari item keranjang berdasarkan id
+        $keranjang=Keranjang::findOrFail($id);
+        //Upadate qty dan subtootal
+        $keranjang ->qty=$request->input('qty');
+        $keranjang->subtotal=$keranjang->qty*$keranjang->harga;
+        //Simpan perubahan
+        $keranjang->save();
+        //Redirect kembali ke halaman tranbsaksi
+        return redirect('/admin/transaksi');
+    }
+
+    public function simpanTransaksi(){
+        $kode_transaksi =$this->kodeOtomatis();
+        $tanggal_transaksi=Carbon::now()->format('Y-m-d');
+        $keranjang= Keranjang::all();
+        $total= $keranjang->sum('subtotal');
+
+        //insert data transaksi ke database
+        $transaki = new Transaksi();
+        $transaki->kode_transaksi=$kode_transaksi;
+        $transaki->tanggal_transaksi=$tanggal_transaksi;
+        $transaki->total=$total;
+        $transaki->save();
+
+        foreach($keranjang as $cart){
+            $detailTransaksi= new TransaksiDetail();
+            $detailTransaksi->transaksi_id=$kode_transaksi;
+            $detailTransaksi->produk_id=$cart->produk_id;
+            $detailTransaksi->qty=$cart->qty;
+            $detailTransaksi->harga=$cart->harga;
+            $detailTransaksi->subtotal=$cart->subtotal;
+            $detailTransaksi->save();
+
+        }
+        Keranjang::truncate();
+        return redirect()->back();
+
     }
 
     public function add_cart($id){
