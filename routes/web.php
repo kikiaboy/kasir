@@ -94,3 +94,6 @@ Route::delete('/keranjang/{id}',[TransaksiController::class,'destroy'])->name('k
 Route::post('/keranjang/update/{id}',[TransaksiController::class,'updateQty'])->name('keranjang.update');
 
 Route::post('/transaksi/simpan',[TransaksiController::class,'simpanTransaksi'])->name('transaksi.simpan');
+
+Route::get('/transaksi/cetak/{kode}',[TransaksiController::class,'cetak'])->name('transaksi.cetak');
+

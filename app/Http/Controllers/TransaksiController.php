@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Produk;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Keranjang;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
@@ -99,7 +100,26 @@ class TransaksiController extends Controller
 
         }
         Keranjang::truncate();
-        return redirect()->back();
+
+        //kirim respon JSON ke frontend
+        return response()->json([
+            'status'=> 'success',
+            'kode_transaksi'=>$kode_transaksi
+        ]);
+
+    }
+
+    public function cetak($kode_transaksi,Request $request){
+        $transaksi= Transaksi::where('kode_transaksi',$kode_transaksi)->firstOrFail();
+        $detail =TransaksiDetail::with('produk')->where('transaksi_id',$kode_transaksi)->get();
+
+        //Ambil tunai dan kembali dari query string (tidak dari database )
+        $tunai = $request->query('tunai',0);
+        $kembali = $request->query('kembali',0);
+
+        $pdf=PDF::loadView('admin.struk',compact('transaksi','detail','tunai','kembali'))->setPaper([0,0,250,600],'portrait');
+
+        return $pdf->stream('struk.pdf');
 
     }
 

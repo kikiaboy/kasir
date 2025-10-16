@@ -84,8 +84,8 @@
                 <label for="bayar" class="form-label">Total</label>
             </div>
             <div class="col-md-3">
-                <input type="text" class="form-control"
-                    id="bayar" value="Rp. {{ number_format($total, 0, ',', '.') }}" readonly>
+                <input type="text" class="form-control" id="bayar"
+                    value="Rp. {{ number_format($total, 0, ',', '.') }}" readonly>
                 <input type="hidden" name="total" value="{{ $total }}">
             </div>
         </div>
@@ -111,11 +111,12 @@
         </div>
 
         <div class="text-end mt-4">
-            <button type="submit" class="btn btn-primary" {{ $jumlahItem == 0 ? 'disabled' : '' }}>
+            <button id="btnSimpan" type="button" class="btn btn-primary" {{ $jumlahItem == 0 ? 'disabled' : '' }}>
                 Simpan Transaksi
             </button>
         </div>
     </form>
+    @include('admin.modal.transaksi_sukses')
 
     <script>
         document.getElementById("cariProduk").addEventListener("keyup", function() {
@@ -128,6 +129,7 @@
                             });
                     });
     </script>
+
     <script>
         function formatCurrency(value) {
             value = value.replace(/\D/g, '');
@@ -195,6 +197,71 @@
                 errorMessage.style.display = "none";
             });
     </script>
+
+    <script>
+document.getElementById('btnSimpan').addEventListener('click', function(e) {
+    e.preventDefault();
+
+    const form = document.getElementById('form-transaksi');
+    const formData = new FormData(form);
+
+    fetch("{{ route('transaksi.simpan') }}", {
+        method: "POST",
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+        },
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'success') {
+            // tampilkan kode transaksi di modal
+            document.getElementById('kodeTransaksi').innerHTML =
+                'Kode Transaksi: <strong>' + data.kode_transaksi + '</strong>';
+
+            const modal = new bootstrap.Modal(document.getElementById('modalSukses'));
+            modal.show();
+
+            // 🖨 tombol CETAK
+            document.getElementById('btnCetak').onclick = function() {
+                modal.hide();
+
+                // Ambil nilai tunai dan kembalian dari input
+                const tunai = document.getElementById('diterima').value
+                    .replace(/Rp\. /g, '')
+                    .replace(/\./g, '')
+                    .trim();
+
+                const kembali = document.getElementById('kembali').value
+                    .replace(/Rp\. /g, '')
+                    .replace(/\./g, '')
+                    .trim();
+
+                // Bangun URL cetak dengan query string
+                const urlCetak = "{{ url('transaksi/cetak') }}/" +
+                    data.kode_transaksi +
+                    "?tunai=" + tunai +
+                    "&kembali=" + kembali;
+
+                // Buka jendela baru untuk cetak PDF
+                window.open(urlCetak, "_blank");
+
+                // Reload halaman transaksi setelah 1 detik
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            }
+
+            // tombol TIDAK CETAK
+            document.getElementById('btnTidakCetak').onclick = function() {
+                modal.hide();
+                window.location.reload();
+            }
+        }
+    })
+    .catch(err => console.error(err));
+});
+</script>
 
 
 @endsection
