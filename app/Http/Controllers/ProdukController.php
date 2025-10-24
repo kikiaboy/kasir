@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Produk;
 use App\Models\Kategori;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class ProdukController extends Controller
@@ -20,6 +21,16 @@ class ProdukController extends Controller
 
         // mengirim data ke tampilan
         return view('admin.produk',$data);
+    }
+
+    public function cetak_produk(){
+        //ambil data produk dari database
+        $produk = Produk::with('showKategori')->get();
+
+        //Load view cetak dan ubah jadi PDF
+        $pdf=PDF::loadView('admin.cetak.produk_cetak',compact('produk'))->setPaper('A4','portrait');
+
+        return $pdf->stream('laporan-produk.pdf');
     }
 
     /**

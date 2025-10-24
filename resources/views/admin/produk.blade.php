@@ -8,6 +8,8 @@
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahproduk">
   Tambah produk
 </button>
+<a href="/produk/cetak/" class="btn btn-success">Cetak</a>
+
 @include('admin.modal.produk_add')
 
 

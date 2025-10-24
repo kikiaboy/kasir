@@ -97,3 +97,7 @@ Route::post('/transaksi/simpan',[TransaksiController::class,'simpanTransaksi'])-
 
 Route::get('/transaksi/cetak/{kode}',[TransaksiController::class,'cetak'])->name('transaksi.cetak');
 
+
+//cetak produk
+Route::get('/produk/cetak',[ProdukController::class,'cetak_produk'])->name('produk.cetak');
+
